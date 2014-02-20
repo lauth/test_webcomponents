@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test Bob</title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<h1>Test Bob</h1>
+		<p>Ce test fonctionne uniquement avec Chrome.</p>
+		
+		<h2>Name Tag 1</h2>
+		
+		<div id="name-tag">Thomas</div>
+		<template id="name-tag-template">
+			<style>
+				.outer {
+					border: 2px solid brown;
+					border-radius: 1em;
+					background: red;
+					font-size: 20pt;
+					width: 12em;
+					height: 7em;
+					text-align: center;
+				}
+				.boilerplate {
+					color: white;
+					font-family: sans-serif;
+					padding: 0.5em;
+				}
+				.name {
+					color: black;
+					background: white;
+					font-family: "Marker Felt", cursive;
+					font-size: 45pt;
+					padding-top: 0.2em;
+				}
+			</style>
+			<div class="outer">
+				<div class="boilerplate">
+					Hi! My name is
+				</div>
+				<div class="name">
+					<content></content>
+				</div>
+			</div>
+		</template>
+		
+		<h2>Name Tag 2</h2>
+		
+		<div id="name-tag2">
+			<div class="first">Bob</div>
+			<div>B. Love</div>
+			<div class="email">bob@</div>
+		</div>
+		<template id="name-tag2-template">
+			<div style="background: purple; padding: 1em;">
+				<div style="color: red;">
+					<content select=".first"></content>
+				</div>
+				<div style="color: yellow;">
+					<content select="div"></content>
+				</div>
+				<div style="color: blue;">
+					<content select=".email"></content>
+				</div>
+			</div>
+		</template>
+		
+		<script>
+			document.onreadystatechange = function () {
+				if (document.readyState == 'complete') {
+					// Add the template to the name tag shadow root
+					var nameTag = document.querySelector('#name-tag');
+					var shadow = nameTag.webkitCreateShadowRoot(); // Use webkit prefix
+					var template = document.querySelector('#name-tag-template');
+					
+					shadow.appendChild(template.content);
+					template.remove(); // remove template from DOM
+					
+					// Add the template to the name tag 2 shadow root
+					var nameTag2 = document.querySelector('#name-tag2');
+					var shadow2 = nameTag2.webkitCreateShadowRoot(); // Use webkit prefix
+					var template2 = document.querySelector('#name-tag2-template');
+					
+					shadow2.appendChild(template2.content);
+					template2.remove(); // remove template from DOM
+				}
+			}
+		</script>		
+	</body>
+</html>
