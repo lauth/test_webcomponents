@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shadow 201</title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<div>
+			<h3>Light DOM</h3>
+		</div>
+		<script>
+			var root = document.querySelector('div').webkitCreateShadowRoot();
+			root.innerHTML = '<style>h3{ color: red; }</style>' +
+							 '<h3>Shadow DOM</h3>';
+		</script>
+		
+		<!-- 
+		Pour que :host fonctionne, aller dans about:flags :
+		Activer les fonctionnalités expérimentales de Web Platform
+		-->
+		<button class="red">My Button</button>
+		<script>
+			var button = document.querySelector('button');
+			var root = button.webkitCreateShadowRoot();
+			root.innerHTML = '<style>' +
+				':host {' +
+				  'opacity: 0.4;' +
+				  'transition: opacity 420ms ease-in-out;' +
+				'}' +
+				':host:hover {' +
+				  'opacity: 1;' +
+				'}' +
+				':host:active {' +
+				  'position: relative;' +
+				  'top: 3px;' +
+				  'left: 3px;' +
+				'}' +
+				'</style>' +
+				'<content></content>';
+		</script>
+		
+		<style>
+		  #host ^ span {
+			color: red;
+		  }
+		</style>
+
+		<div id="host">
+		  <span>Light DOM</span>
+		</div>
+
+		<script>
+		  var host = document.querySelector('#host');
+		  var root = host.webkitCreateShadowRoot();
+		  root.innerHTML = "<span>Shadow DOM</span>" + 
+						   "<content></content>";
+		</script>
+		
+		<div id="host2">
+		  <h3>Light DOM</h3>
+		  <section>
+			<div>I'm not underlined</div>
+			<p>I'm underlined in Shadow DOM!</p>
+		  </section>
+		</div>
+
+		<script>
+		var div = document.querySelector('#host2');
+		var root = div.webkitCreateShadowRoot();
+		root.innerHTML = '\
+			<style>\
+			  h3 { color: red; }\
+			  content[select="h3"]::content > h3 {\
+				color: green;\
+			  }\
+			  ::content section p {\
+				text-decoration: underline;\
+			  }\
+			</style>\
+			<h3>Shadow DOM</h3>\
+			<content select="h3"></content>\
+			<content select="section"></content>';
+		</script>		
+	</body>
+</html>
